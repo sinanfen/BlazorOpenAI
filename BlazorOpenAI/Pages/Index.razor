@@ -1,0 +1,30 @@
+﻿@page "/"
+@page "/logo-generator"
+@inject OpenAIService OpenAIService
+
+<h3>Logo Üretici</h3>
+
+<div>
+    <input @bind="prompt" placeholder="Logo için açıklama girin" />
+    <button @onclick="GenerateLogo">Logo Üret</button>
+</div>
+
+@if (!string.IsNullOrEmpty(logoUrl))
+{
+    <div>
+        <img src="@logoUrl" alt="Üretilen Logo" />
+    </div>
+}
+
+@code {
+    private string prompt = "";
+    private string logoUrl = "";
+
+    private async Task GenerateLogo()
+    {
+        if (!string.IsNullOrWhiteSpace(prompt))
+        {
+            logoUrl = await OpenAIService.GenerateLogoAsync(prompt);
+        }
+    }
+}
